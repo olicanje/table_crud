@@ -1,9 +1,11 @@
-
 /*
- * @file: tables_and_user.sql
- * @author: jequeto@gmail.com
- * @since: 2012 enero
+ * @file: daw2_tables_and_user.sql
+ * @author: jolivacanelo@gmail.com
+ * @since: 04 de Febrero del 2014
 */
+
+--mysql -hlocalhost -udaw2_user -pdaw2_user
+
 drop database if exists olicanje;
 create database olicanje;
 
