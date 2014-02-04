@@ -113,6 +113,7 @@ div#pie {
 	background-color: lightgray;
 	border: 1px solid black;
 	text-decoration: none;
+        cursor: pointer;
 }
 
 table {

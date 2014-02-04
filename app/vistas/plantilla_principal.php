@@ -1,19 +1,19 @@
 <!DOCTYPE HTML>
-<html lang='<?php echo \core\Idioma::get(); ?>'>
+<html lang='es'>
 	<head>
-		<title><?php echo \core\Idioma::text("title", "plantilla_internacional"); ?></title>
+		<title>Table_Crud</title>
 		<meta name="Description" content="Explicación de la página" /> 
 		<meta name="Keywords" content="palabras en castellano e ingles separadas por comas" /> 
 		<meta name="Generator" content="esmvcphp framewrok" /> 
 	 	<meta name="Origen" content="esmvcphp framework" /> 
 		<meta name="Author" content="Jesús María de Quevedo Tomé" /> 
 		<meta name="Locality" content="Madrid, España" /> 
-		<meta name="Lang" content="<?php echo \core\Idioma::get(); ?>" /> 
+		<meta name="Lang" content="es" /> 
 		<meta name="Viewport" content="maximum-scale=10.0" /> 
 		<meta name="revisit-after" content="1 days" /> 
 		<meta name="robots" content="INDEX,FOLLOW,NOODP" /> 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf8" /> 
-		<meta http-equiv="Content-Language" content="<?php echo \core\Idioma::get(); ?>"/>
+		<meta http-equiv="Content-Language" content="es"/>
 	
 		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 		<link href="favicon.ico" rel="icon" type="image/x-icon" /> 
@@ -81,21 +81,21 @@
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar(); ?>" title="Inicio">Inicio</a></li>-->
 						<?php echo \core\HTML_Tag::li_menu("item", array("inicio"), "Inicio"); ?>
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("revista"); ?>" title="Revista">Revista</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("revista"), "Revista"); ?>
+						<?php //echo \core\HTML_Tag::li_menu("item", array("revista"), "Revista"); ?>
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("libros"); ?>" title="Libros leídos">Libros</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("libros"), "Libros"); ?>
+						<?php //echo \core\HTML_Tag::li_menu("item", array("libros"), "Libros"); ?>
 						
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("inicio/internacional"); ?>" title="Internacional">Internacional</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("inicio", "internacional"), "Internacional"); ?>
+						<?php //echo \core\HTML_Tag::li_menu("item", array("inicio", "internacional"), "Internacional"); ?>
 						
 						
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("usuarios"); ?>" title="Usuarios">Usuarios</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("usuarios"), "Usuarios"); ?>
-<!--						<li class="item"><a href="<?php //echo \core\URL::generar("categorias"); ?>" title="Categorías">Categorías</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("categorias"), "Categorias"); ?>
+						<?php //echo \core\HTML_Tag::li_menu("item", array("usuarios"), "Usuarios"); ?>
+<!--						<li class="item"><a href="<?php //echo \core\URL::generar("consolas"); ?>" title="Categorías">Categorías</a></li>-->
+						<?php echo \core\HTML_Tag::li_menu("item", array("consolas"), "Consolas"); ?>
 						
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("articulos"); ?>" title="Artículos">Artículos</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("articulos"), "Artículos"); ?>
+						<?php //echo \core\HTML_Tag::li_menu("item", array("articulos"), "Artículos"); ?>
 					</ul>
 			</fieldset>
 		</div>
