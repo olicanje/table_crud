@@ -4,7 +4,10 @@
     Author     : jesus
     Description:  Purpose of the stylesheet follows.
 */
-
+#globals {
+    display: none;
+/*    display: ;*/
+}
 root { 
     display: block;
 }

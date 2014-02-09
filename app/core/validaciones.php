@@ -331,24 +331,24 @@ class Validaciones  {
 		if ($cadena!=null) {
 			$cadena=str_replace(array(' ', '-', '.', ',', ':'), '/', $cadena);
 			/* Para que sea mas facil y ahorrar comprobaciones cambiamos por / todos los signos que pone en el array, de esta manera la fecha siempre sera del tipo dd/mm/aaaa */
-			$patron_fecha_hora="/^\d{1,2}\/\d{1,2}\/\d{4}\/\d{2}\/\d{2}\/\d{2}/";
+			$patron_fecha="/^\d{1,2}\/\d{1,2}\/\d{4}$/";
 			$encuentros=array();
-			if (preg_match($patron_fecha_hora, $cadena, $encuentros)) {
+			if (preg_match($patron_fecha, $cadena, $encuentros)) {
 				$numeros = explode('/', $encuentros[0]); //con explode convertimos en subcadenas el array cadena, cada subcadena esta formada por la division que hace el caracter.
-				if (!mktime ($numeros[3], $numeros[4], $numeros[5], $numeros[1], $numeros[0], $numeros[2]))
+
+                                // Condición anterior
+                                if (!mktime(0,0,0,$numeros[1], $numeros[0], $numeros[2]))
+                                //if( ! checkdate($numeros[1], $numeros[0], $numeros[2]) )
 					$mensaje="La fecha  {$encuentros[0]} es errónea . Revísela. ";
 
 			}
 			else
-				$mensaje="La fecha es errónea. Revísela. ";
+				$mensaje="La fecha es errónea. Revísela. Formato: dd/mm/aaaa. ";
 		}
 		if ($mensaje=="") $mensaje=false;
 		return $mensaje;
 	}
-
 	
-	
-
 	/**
 	 * Identificador de variables o de claves internas. Solo letras, números y _. NO puede empezar por número
 	 * 

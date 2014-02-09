@@ -11,19 +11,21 @@
 set names utf8;
 set sql_mode = 'traditional';
 
+truncate table daw2_consolas;
+
 insert into daw2_consolas
   (nombre, fecha_lanzamiento, precio, unidades_stock, descripcion ) values
-  ('PlayStation 4','2013-11-29',399.95, 1000, 'Peso(aprox: 2,8 kg')
-, ('PlayStation 3','2007-03-23',274.95, 800, 'Peso(aprox: 3,2 kg')
-, ('PlayStation 2','2000-03-04',79.90, 50, 'Peso(aprox: 720 g')
-, ('PS Vita','2012-02-22',194.95, 600, 'Peso(aprox: 280 g')
-, ('PSP','2005-09-01',99.95, 20, 'Peso(aprox: 280 g')
-, ('Wii','2006-12-08',114.95, 100, 'Peso(aprox: 1,74 Kg')
-, ('WiiU','2012-11-30',294.95, 300, 'Peso(aprox: 1,6 kg')
-, ('Xbox 360','2005-11-22',159.95, 700, 'Peso(aprox: 2,9 kg')
-, ('Xone','2013-11-22',400.50, 900, 'Peso(aprox: 3,0 kg')
-, ('Nintendo DS','2005-03-11',49.95, 500, 'Peso(aprox: 214g')
-, ('Nintendo 3DS','2011-02-26',129.95, 800, 'Peso(aprox: 227g')
+  ('PlayStation 4','2013-11-29',399.95, 1000, 'Peso(aprox: 2,8 kg)')
+, ('PlayStation 3','2007-03-23',274.95, 800, 'Peso(aprox: 3,2 kg)')
+, ('PlayStation 2','2000-03-04',79.90, 50, 'Peso(aprox: 720 g)')
+, ('PS Vita','2012-02-22',194.95, 600, 'Peso(aprox: 280 g)')
+, ('PSP','2005-09-01',99.95, 20, 'Peso(aprox: 280 g)')
+, ('Wii','2006-12-08',114.95, 100, 'Peso(aprox: 1,74 Kg)')
+, ('WiiU','2012-11-30',294.95, 300, 'Peso(aprox: 1,6 kg)')
+, ('Xbox 360','2005-11-22',159.95, 700, 'Peso(aprox: 2,9 kg)')
+, ('Xone','2013-11-22',400.50, 900, 'Peso(aprox: 3,0 kg)')
+, ('Nintendo DS','2005-03-11',49.95, 500, 'Peso(aprox: 214g)')
+, ('Nintendo 3DS','2011-02-26',129.95, 800, 'Peso(aprox: 227g)')
 ;
 
 -- insert into daw2_roles

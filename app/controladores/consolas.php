@@ -5,7 +5,7 @@ class consolas extends \core\Controlador {
 
 	
 	
-	/**
+	 /**
 	 * Presenta una <table> con las filas de la tabla con igual nombre que la clase.
 	 * @param array $datos
 	 */
@@ -21,7 +21,10 @@ class consolas extends \core\Controlador {
 		
 	}
 	
-	
+	/**
+        * Presenta un formulario para insertar nuevas filas a la tabla consolas
+        * @param array $datos
+        */
 	public function form_insertar(array $datos=array()) {
 		
 		$datos["form_name"] = __FUNCTION__;
@@ -30,21 +33,27 @@ class consolas extends \core\Controlador {
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
-
+         /**
+         * Función que valida los datos insertados por el usuario. Si valida corectamente mostrará la tabla con 
+         * la nueva inserción, sino mostrará los errores que se tienen.
+         * @param array $datos
+         */
 	public function validar_form_insertar(array $datos=array()) {
-		
-		
 		
 		$validaciones = array(
 			 "nombre" =>"errores_requerido && errores_texto && errores_unicidad_insertar:nombre/consolas/nombre"
+                        , "fecha_lanzamiento" => "errores_fecha_hora && errores_requerido"
+                        , "precio" => "errores_requerido && errores_texto && errores_precio"
+                        , "unidades_stock" => "errores_requerido && errores_texto && errores_numero_entero_positivo"
 			, "descripcion" => "errores_texto"
-
 		);
+                
 		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos))
             $datos["errores"]["errores_validacion"]="Corrige los errores.";
 		else {
                     // Conversiones a mysql
-                    $datos['fecha'] = \core\Conversiones::fecha_hora_es_a_mysql($datos['fecha']);
+                    $datos['values']['fecha_lanzamiento'] = \core\Conversiones::fecha_hora_es_a_mysql($datos['values']['fecha_lanzamiento'] );
+                    $datos['values']['precio'] = \core\Conversiones::decimal_coma_a_punto($datos['values']['precio']);
 			if ( ! $validacion = \modelos\Modelo_SQL::insert($datos["values"], 'consolas')) // Devuelve true o false
 				$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
 		}
@@ -92,11 +101,21 @@ class consolas extends \core\Controlador {
 				}
 				else {
 					$datos['values'] = $filas[0];
+                                        
+                                        // Mostramos los datos que necesitan conversiones
+                                        $datos['values']['fecha_lanzamiento'] = \core\Conversiones::fecha_hora_mysql_a_es($datos['values']['fecha_lanzamiento']);
+                                        $datos['values']['precio'] = \core\Conversiones::decimal_punto_a_coma($datos['values']['precio']);
+
+                                        $clausulas = array('order_by' => "nombre");
+                                        $datos['categorias'] = \modelos\Datos_SQL::table("consolas")->select( $clausulas);
 					
 				}
 			}
 		}
 		
+                // Envía el nombre del formulario
+                $datos['form_name'] = __FUNCTION__;
+        
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
 		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
@@ -108,17 +127,23 @@ class consolas extends \core\Controlador {
 	
 	public function validar_form_modificar(array $datos=array()) {	
 		
-		$validaciones=array(
-			 "id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/consolas/id"
-			, "nombre" =>"errores_requerido && errores_texto && errores_unicidad_modificar:id,nombre/consolas/nombre,id"
+		$validaciones = array(
+                        "id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/consolas/id"
+			,"nombre" => "errores_requerido && errores_texto && errores_unicidad_modificar:id,nombre/consolas/id,nombre"
+                        , "fecha_lanzamiento" => "errores_fecha_hora && errores_requerido"
+                        , "precio" => "errores_requerido && errores_texto && errores_precio"
+                        , "unidades_stock" => "errores_requerido && errores_texto && errores_numero_entero_positivo"
 			, "descripcion" => "errores_texto"
-			
 		);
+                
 		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos)) {
 			
             $datos["errores"]["errores_validacion"] = "Corrige los errores.";
 		}
 		else {
+                        // Conversiones a mysql
+                        $datos['values']['fecha_lanzamiento'] = \core\Conversiones::fecha_hora_es_a_mysql($datos['values']['fecha_lanzamiento'] );
+                        $datos['values']['precio'] = \core\Conversiones::decimal_coma_a_punto($datos['values']['precio']);
 			
 			if ( ! $validacion = \modelos\Datos_SQL::update($datos["values"], 'consolas')) // Devuelve true o false
 					
@@ -130,7 +155,9 @@ class consolas extends \core\Controlador {
 		else {
 			$datos = array("alerta" => "Se han modificado correctamente.");
 			// Definir el controlador que responderá después de la inserción
-			\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);		
+			//\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);
+                        \core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("consolas"));
+			\core\HTTP_Respuesta::enviar();
 		}
 		
 	}
@@ -158,12 +185,18 @@ class consolas extends \core\Controlador {
 			}
 			else {
 				$datos['values'] = $filas[0];
+                                
+                                // Mostramos los datos que necesitan conversiones
+                                $datos['values']['fecha_lanzamiento'] = \core\Conversiones::fecha_hora_mysql_a_es($datos['values']['fecha_lanzamiento']);
+                                $datos['values']['precio'] = \core\Conversiones::decimal_punto_a_coma($datos['values']['precio']);
+
 			}
 		}
 		
-		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
-		\core\HTTP_Respuesta::enviar($http_body);
+                $datos['form_name'] = __FUNCTION__;
+                $datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
+                $http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+                \core\HTTP_Respuesta::enviar($http_body);
 	}
 
 	
@@ -193,7 +226,9 @@ class consolas extends \core\Controlador {
 			else
 			{
 			$datos = array("alerta" => "Se borrado correctamente.");
-			\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);		
+//			\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);
+                        \core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("consolas"));
+			\core\HTTP_Respuesta::enviar();
 			}
 		}
 		
