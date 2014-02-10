@@ -1,7 +1,7 @@
 <?php
 namespace controladores;
 
-class consolas extends \core\Controlador {
+class tabla extends \core\Controlador {
 
 	
 	
@@ -67,7 +67,7 @@ class consolas extends \core\Controlador {
 			//\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);
 			$_SESSION["alerta"] = "Se han grabado correctamente los detalles";
 			//header("Location: ".\core\URL::generar("consolas/index"));
-			\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("consolas/index"));
+			\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("tabla"));
 			\core\HTTP_Respuesta::enviar();
 		}
 	}
@@ -156,7 +156,7 @@ class consolas extends \core\Controlador {
 			$datos = array("alerta" => "Se han modificado correctamente.");
 			// Definir el controlador que responderá después de la inserción
 			//\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);
-                        \core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("consolas"));
+                        \core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("tabla"));
 			\core\HTTP_Respuesta::enviar();
 		}
 		
@@ -227,7 +227,7 @@ class consolas extends \core\Controlador {
 			{
 			$datos = array("alerta" => "Se borrado correctamente.");
 //			\core\Distribuidor::cargar_controlador('consolas', 'index', $datos);
-                        \core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("consolas"));
+                        \core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("tabla"));
 			\core\HTTP_Respuesta::enviar();
 			}
 		}

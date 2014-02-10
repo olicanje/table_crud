@@ -1,12 +1,12 @@
 <div>
-	<h1>Listado de consolas</h1>
+	<h1>Listado de tabla</h1>
 	<p>
-		<a href='?menu=consolas&submenu=listado_js' title='Devuelve objeto json con una propiedad que contiene un array'>Listado en json</a> - 
-		<a href='?menu=consolas&submenu=listado_js_array&nombre=a'  title='Devuelve un array que contiene objetos json'>Listado en json con array de articulos que contiene "a" en su nombre</a> - 
-		<a href='?menu=consolas&submenu=listado_xml'>Listado en xml</a> - 
-		<a href='?menu=consolas&submenu=listado_xls'>Descargar Listado en excel (.xls)</a>
+		<a href='?menu=tabla&submenu=listado_js' title='Devuelve objeto json con una propiedad que contiene un array'>Listado en json</a> - 
+		<a href='?menu=tabla&submenu=listado_js_array&nombre=a'  title='Devuelve un array que contiene objetos json'>Listado en json con array de articulos que contiene "a" en su nombre</a> - 
+		<a href='?menu=tabla&submenu=listado_xml'>Listado en xml</a> - 
+		<a href='?menu=tabla&submenu=listado_xls'>Descargar Listado en excel (.xls)</a>
 		 - 
-		<a href='?menu=consolas&submenu=listado_pdf'>Descargar pdf</a>
+		<a href='?menu=tabla&submenu=listado_pdf'>Descargar pdf</a>
 	</p>
 	<table border='1'>
 		<thead>
@@ -31,9 +31,9 @@
                                                 <td>{$fila['unidades_stock']}</td>
 						<td>{$fila['descripcion']}</td>
 						<td>
-					".\core\HTML_Tag::a_boton_onclick("boton", array("consolas", "form_modificar", $fila['id']), "modificar")
+					".\core\HTML_Tag::a_boton_onclick("boton", array("tabla", "form_modificar", $fila['id']), "modificar")
 //							<a class='boton' href='?menu={$datos['controlador_clase']}&submenu=form_modificar&id={$fila['id']}' >modificar</a>
-					.\core\HTML_Tag::a_boton_onclick("boton", array("consolas", "form_borrar", $fila['id']), "borrar").
+					.\core\HTML_Tag::a_boton_onclick("boton", array("tabla", "form_borrar", $fila['id']), "borrar").
 //							<a class='boton' href='?menu={$datos['controlador_clase']}&submenu=form_borrar&id={$fila['id']}' >borrar</a>
 						"</td>
 					</tr>
@@ -43,7 +43,7 @@
 				<tr>
 					<td colspan='5'></td>
 						<td>"
-			.\core\HTML_Tag::a_boton("boton", array("consolas", "form_insertar"), "insertar").
+			.\core\HTML_Tag::a_boton("boton", array("tabla", "form_insertar"), "insertar").
 					"</td>
 				</tr>
 			";

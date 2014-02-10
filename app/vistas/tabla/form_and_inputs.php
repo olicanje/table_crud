@@ -30,5 +30,6 @@
 	
 	<input type='submit' value='Enviar'>
 	<input type='reset' value='Limpiar'>
-	<button type='button' onclick='location.assign("?menu=<?php echo $datos['controlador_clase']; ?>&submenu=index");'>Cancelar</button>
+	<!--<button type='button' onclick='location.assign("?menu=<?php // echo $datos['controlador_clase']; ?>&submenu=index");'>Cancelar</button>-->
+        <button type='button' onclick='window.location.assign("<?php echo \core\URL::generar($datos['controlador_clase']); ?>");'>Cancelar</button>
 </form>
