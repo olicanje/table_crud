@@ -14,7 +14,19 @@ class tabla extends \core\Controlador {
 		$clausulas['order_by'] = 'nombre';
 		//$datos["filas"] = \modelos\consolas::select($clausulas, "consolas"); // Recupera todas las filas ordenadas
 		$datos["filas"] = \modelos\Modelo_SQL::table("consolas")->select($clausulas); // Recupera todas las filas ordenadas
-		
+
+//            var_dump($datos);
+//            var_dump($datos["filas"]);
+//            Mostramos los datos a modificar en formato europeo. Convertimos el formato de MySQL a europeo
+//            foreach ($datos["filas"] as $key => $fila) {
+//                var_dump($fila['masa_atomica']);
+//                $datos['filas'][$key]['masa_atomica']=  \core\Conversiones::decimal_punto_a_coma($fila['masa_atomica']);
+//                var_dump($datos['filas'][$key]['masa_atomica']);
+//            }
+            self::convertir_formato_mysql_a_ususario($datos['filas']);
+        
+            //var_dump($datos);                
+                
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
 		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
@@ -48,14 +60,15 @@ class tabla extends \core\Controlador {
 			, "descripcion" => "errores_texto"
 		);
                 
-		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos))
-            $datos["errores"]["errores_validacion"]="Corrige los errores.";
-		else {
-                    // Conversiones a mysql
-                    $datos['values']['fecha_lanzamiento'] = \core\Conversiones::fecha_hora_es_a_mysql($datos['values']['fecha_lanzamiento'] );
-                    $datos['values']['precio'] = \core\Conversiones::decimal_coma_a_punto($datos['values']['precio']);
-			if ( ! $validacion = \modelos\Modelo_SQL::insert($datos["values"], 'consolas')) // Devuelve true o false
-				$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
+		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos)){
+                    $datos["errores"]["errores_validacion"]="Corrige los errores.";
+                }else{
+                    //Convertimos a formato MySQL
+                    self::convertir_a_formato_mysql($datos['values']);                    
+                    //$datos['values']['fecha_salida'] = \core\Conversiones::fecha_es_a_mysql($datos['values']['fecha_salida']);
+                    
+                    if ( ! $validacion = \modelos\Modelo_SQL::insert($datos["values"], 'consolas')) // Devuelve true o false
+                        $datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
 		}
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo
 			\core\Distribuidor::cargar_controlador('consolas', 'form_insertar', $datos);
@@ -131,7 +144,7 @@ class tabla extends \core\Controlador {
                         "id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/consolas/id"
 			,"nombre" => "errores_requerido && errores_texto && errores_unicidad_modificar:id,nombre/consolas/id,nombre"
                         , "fecha_lanzamiento" => "errores_fecha_hora && errores_requerido"
-                        , "precio" => "errores_requerido && errores_texto && errores_precio"
+                        , "precio" => "errores_requerido && errores_texto && errores_decimal"
                         , "unidades_stock" => "errores_requerido && errores_texto && errores_numero_entero_positivo"
 			, "descripcion" => "errores_texto"
 		);
@@ -140,10 +153,9 @@ class tabla extends \core\Controlador {
 			
             $datos["errores"]["errores_validacion"] = "Corrige los errores.";
 		}
-		else {
-                        // Conversiones a mysql
-                        $datos['values']['fecha_lanzamiento'] = \core\Conversiones::fecha_hora_es_a_mysql($datos['values']['fecha_lanzamiento'] );
-                        $datos['values']['precio'] = \core\Conversiones::decimal_coma_a_punto($datos['values']['precio']);
+                else {
+                    //Convertimos a formato MySQL
+                    self::convertir_a_formato_mysql($datos['values']); 
 			
 			if ( ! $validacion = \modelos\Datos_SQL::update($datos["values"], 'consolas')) // Devuelve true o false
 					
@@ -234,7 +246,41 @@ class tabla extends \core\Controlador {
 		
 	}
 	
-	
+        /**
+         * Fución que realiza las conversiones de los campos usados en está aplicación al formato utilizado por MySQL.
+         * Convertimos a formato MySQL
+         * 
+         * @param array $param Se corresponderá por regla general con datos['values'] y lo pasamos por referencia, para que modificque el valor
+         */
+        private static function convertir_a_formato_mysql(array &$param) {  //$param = datos['values'] y lo pasamos por referencia, para que modificque el valor        
+            $param['precio'] = \core\Conversiones::decimal_puntoOcoma_a_punto($param['precio']);
+            $param['fecha_lanzamiento'] = \core\Conversiones::fecha_es_a_mysql($param['fecha_lanzamiento']);
+        }	
+        
+    /**
+     * Fución que realiza las conversiones de los campos que muestran las tablas del formato utilizado por MySQL al formato europeo.
+     * Convertimos a formato MySQL
+     * 
+     * @param array $param Se corresponderá por regla general con datos['values'] y lo pasamos por referencia, para que modificque el valor
+     */
+    private static function convertir_formato_mysql_a_ususario(array &$param) {  //$param = datos['values'] o $param = datos['filas'] si enviamos toda la tabla, y lo pasamos por referencia, para que modifique el valor
+        
+        //var_dump($param);
+        if(!isset($param['id'])){   //Si existe $param['id'], es que vienen varias filas 0,1,2...,n, es decir no viene de intentar modificar o borrar ua única fila
+            foreach ($param as $key => $fila) {
+                $param[$key]['precio']=  \core\Conversiones::decimal_punto_a_coma($fila['precio']);
+                $param[$key]['fecha_lanzamiento']=  \core\Conversiones::fecha_mysql_a_es($param[$key]['fecha_lanzamiento']);
+            }
+        }else{
+            $param['precio']=  \core\Conversiones::decimal_punto_a_coma($param['precio']);            
+            if(preg_match("/MSIE/", $_SERVER['HTTP_USER_AGENT'])){
+                $param['fecha_lanzamiento']=  \core\Conversiones::fecha_mysql_a_es($param['fecha_lanzamiento']);
+            }
+            //fecha_entrada es readOnly en los formularios, por lo que no es necesario realizar la conversión.
+        }
+        
+    }       
+        
 	public function listado_pdf(array $datos=array()) {
 		
 		$validaciones = array(

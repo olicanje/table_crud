@@ -319,7 +319,24 @@ class Validaciones  {
 		return $mensaje ;		
 	}
 
-	
+	    /**
+        * Valida para un número real usando "," o "." como separador decimal.
+        * Ejemplo 21.01526 12.
+        * 
+        * @param string $cadena
+        * @return boolean|string
+        */
+       public static function errores_decimal($cadena=null) {
+
+               $mensaje = null; // Optimista
+
+               if ( ! is_null($cadena) && strlen($cadena)) {
+                       $patron="/^(\d{0,})(([\.\,]\d{0,}){0,1})$/i";
+                       if( ! preg_match($patron, $cadena))
+                               $mensaje ='-php- Error: El número debe escribirse usando "." o"," como separador decimal y sin separador de miles';
+               }
+               return $mensaje ;		
+       }
 	
 	/**
 	 * Cadena representa una fecha y horas válidas en españa, con el formato dd/mm/aaaa hh:mm:ss

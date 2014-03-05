@@ -8,6 +8,17 @@
 		 - 
 		<a href='?menu=tabla&submenu=listado_pdf'>Descargar pdf</a>
 	</p>
+        <!-- boton insertar del principio de la tabla -->
+        <?php
+            echo "
+                <tr>
+                    <td>"
+            .\core\HTML_Tag::a_boton("boton", array("tabla", "form_insertar"), "insertar").
+                    "</td>
+                </tr>
+            ";
+        ?>
+        
 	<table border='1'>
 		<thead>
 			<tr>
